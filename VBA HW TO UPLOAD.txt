@@ -1,0 +1,116 @@
+Sub VBA_HW()
+ 
+    Dim Ticker As String
+    Dim LastRow As Double
+    
+    Dim StartRow As Integer
+    Dim TotalStockVolume As Double
+    
+    Dim OpenPrice As Double
+    Dim YearlyChange As Double
+    Dim PercentageChange As Double
+    
+    
+    For Each ws In Worksheets
+    ws.Activate
+    
+    LastRow = ws.Cells(Rows.Count, "A").End(xlUp).Row
+    
+    
+    TotalStockVolume = 0
+    StartRow = 0
+    Ticker = ""
+    YearlyChange = 0
+    OpenPrice = 0
+    PercentageChange = 0
+    
+    
+   
+    
+   
+    For i = 2 To LastRow
+    
+    Ticker = Cells(i, 1).Value
+    
+    If OpenPrice = 0 Then
+        OpenPrice = Cells(i, 3).Value
+    End If
+    
+    
+    TotalStockVolume = TotalStockVolume + Cells(i, 7).Value
+           
+    If Cells(i + 1, 1).Value <> Ticker Then
+        StartRow = StartRow + 1
+        
+        Cells(StartRow + 1, 9).Value = Ticker
+        
+        ClosePrice = Cells(i, 6)
+        
+        YearlyChange = ClosePrice - OpenPrice
+        
+        Cells(StartRow + 1, 10).Value = YearlyChange
+        
+        If OpenPrice = 0 Then
+        PercentageChange = 0
+        Else
+        PercentageChange = (YearlyChange / OpenPrice)
+        
+        Cells(StartRow + 1, 11).Value = Format(PercentageChange, "Percent")
+        
+        End If
+        
+        OpenPrice = 0
+        
+        Cells(StartRow + 1, 12).Value = TotalStockVolume
+        
+        TotalStockVolume = 0
+        
+        
+    If YearlyChange > 0 Then
+    
+        Cells(StartRow + 1, 10).Interior.ColorIndex = 4
+      
+      ElseIf YearlyChange < 0 Then
+        
+        Cells(StartRow + 1, 10).Interior.ColorIndex = 3
+      
+      Else
+        
+        Cells(StartRow + 1, 10).Interior.ColorIndex = 6
+      End If
+
+        
+        
+        
+       
+        
+        
+        
+   
+        End If
+        
+  
+   
+       
+  
+    
+
+    Next i
+    
+    
+    
+
+ 'Exit For
+   
+
+Next ws
+
+End Sub
+
+
+
+
+
+
+
+
